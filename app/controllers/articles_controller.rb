@@ -1,10 +1,19 @@
 class ArticlesController < ApplicationController
   
-  http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
+  # before_action :authenticate_user!
+  
+  # http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
+  
   
   def index
+    @articles = Article.all
+  end
+
+  def indexApi
       @articles = Article.all
-    end
+      render :json => @articles 
+      # respond_to :json => @articles 
+  end
 
 
     def show
@@ -13,12 +22,13 @@ class ArticlesController < ApplicationController
 
 
     def new
-      @article = Article.new
+      @article = current_user.articles.build
     end
   
 
+    
     def create
-      @article = Article.new(article_params)
+      @article = current_user.articles.build(article_params)
   
       if @article.save
         redirect_to @article
@@ -26,6 +36,7 @@ class ArticlesController < ApplicationController
         render :new
       end
     end
+
 
 
     

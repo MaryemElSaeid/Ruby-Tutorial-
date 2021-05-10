@@ -2,12 +2,11 @@
 
 <p><%= @article.text %></p>
 
-<ul>
-  <li><%= link_to "Edit", edit_article_path(@article) %></li>
-</ul>
 
 <h2>Comments</h2>
 <%= render @article.comments %>
 
 <h2>Add a comment:</h2>
+<% if user_signed_in? %> 
 <%= render 'comments/form' %>
+<% end %>
